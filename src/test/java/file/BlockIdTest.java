@@ -2,29 +2,30 @@ package file;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class BlockIdTest {
 
-    private BlockId blockId = null;
+    private static BlockId blockId = null;
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void setUp() {
         blockId = new BlockId("test", 1);
     }
 
     @Test
-    public void getFileNameTest() {
+    public void getFileNameTest1() {
         Assert.assertEquals("test", blockId.getFileName());
     }
 
     @Test
-    public void getBlockNumTest() {
+    public void getBlockNumTest2() {
         Assert.assertTrue( blockId.getBlockNum() == 1);
     }
 
     @Test
-    public void blockEqualTest() {
+    public void blockEqualTest3() {
         BlockId blockIdT1 = new BlockId("test1", 1);
         Assert.assertNotEquals(blockIdT1, blockId);
 

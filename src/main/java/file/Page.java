@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Page {
     private ByteBuffer byteBuffer;
-    private static Charset CHARSET = StandardCharsets.US_ASCII;
+    public static Charset CHARSET = StandardCharsets.US_ASCII;
 
     /**
      * 在jvm堆上分配的存储空间
