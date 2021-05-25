@@ -34,12 +34,11 @@ public class FileManagerTest {
     @AfterClass
     public static void tearDown() {
         File testFile = new File(dbDirectory, testFileName);
-        if(testFile.exists()) {
+        if (testFile.exists()) {
             testFile.delete();
         }
         dbDirectory.delete();
     }
-
 
 
     @Test
@@ -68,7 +67,6 @@ public class FileManagerTest {
         Assert.assertEquals(blockId.getFileName(), testFileName);
         Assert.assertTrue(blockId.getBlockNum() == (readWriteBlockNum + 1));
     }
-
 
 
 }

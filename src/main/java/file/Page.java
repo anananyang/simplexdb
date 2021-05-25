@@ -28,6 +28,17 @@ public class Page {
     }
 
     /**
+     * 计算字符串 str 会占用的长度
+     *
+     * @param str
+     * @return
+     */
+    public static int maxLength(String str) {
+        int bytesPerChar = (int) CHARSET.newEncoder().maxBytesPerChar();
+        return Integer.BYTES + (str.length() * bytesPerChar);
+    }
+
+    /**
      * 在 ByteBuffer 的指定位置读取一个 int 类型的数字
      *
      * @param offset
@@ -79,6 +90,7 @@ public class Page {
      * 写入字符串。
      * 1、先将字符串按照指定的编码转换成字节数组
      * 2、将字节数组写入到 ByteBuffer 中
+     *
      * @param offset
      * @param str
      */
@@ -95,6 +107,7 @@ public class Page {
     /**
      * 该方法主要由 fileManager 使用. fileManager 获取到 ByteBuffer 之后
      * 可以将 ByteBuffer 的内容写入到指定的 block 中，或者将指定的 block 读取到 ByteBuffer 中
+     *
      * @return
      */
     ByteBuffer getContent() {

@@ -41,6 +41,10 @@ public class FileManager {
         return blockSize;
     }
 
+    public File getDbDirectory() {
+        return dbDirectory;
+    }
+
     /**
      * 将指定块读取到 page 中
      *
@@ -76,7 +80,7 @@ public class FileManager {
     /**
      * 给指定的文件新加一个块
      * 1、计算新的块编号
-     * 2、将新的块对应的文件位置全部 reset 为 0
+     * 2、将新的块对应的文件位置全部重写为0。其中一个最大的好处就是方便计算块
      *
      * @param fileName
      * @return
@@ -87,8 +91,10 @@ public class FileManager {
         byte[] bytes = new byte[blockSize];
         try {
             RandomAccessFile file = this.getFile(fileName);
+//            System.out.println("before appending file len: " + file.length());
             file.seek(blockId.getBlockNum() * blockSize);
             file.write(bytes);
+//            System.out.println("after appending file len: " + file.length());
         } catch (IOException e) {
             throw new RuntimeException("cannot append block " + blockNum);
         }
@@ -96,19 +102,22 @@ public class FileManager {
         return blockId;
     }
 
+
     /**
      * 计算指定的文件的新的 block 的 number
+     * ps: 因为在 append 一个newBlock时，会将newBlock对应的文件位置 BlockSize 大小都重写为 0
+     * 所以被 FileManager 所管理的文件长度一定是 blockSize 的整数倍
      *
      * @param fileName
      * @return
      */
-    private int getNewBlockNum(String fileName) {
+    public int getNewBlockNum(String fileName) {
         try {
             RandomAccessFile file = this.getFile(fileName);
             long fileLen = file.length();
             return (int) (fileLen / blockSize);
         } catch (IOException e) {
-            throw new RuntimeException("cannot get new block number of file [ " + fileName + " ]");
+            throw new RuntimeException("cannot get new block num of file [ " + fileName + " ]");
         }
 
     }
