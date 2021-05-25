@@ -47,7 +47,7 @@ public class LogManagerTest {
     }
 
     /**
-     * 对日志文件写入，已经使用迭代器读取进行测试，保证写入的内容与读取的内容一致
+     * 对日志文件写入，已及使用迭代器读取进行测试，保证写入的内容与读取的内容一致
      */
     @Test
     public void test1AppendAndInterator() {
@@ -55,7 +55,7 @@ public class LogManagerTest {
         int random = ThreadLocalRandom.current().nextInt(100);
         // 保存序列号对应的日志记录
         Map<Integer, String> logMap = new HashMap<>();
-        // 生成整数
+        // 写日志
         for (int i = 0; i < 100; i++) {
             int sn = random + i;
             String logRecord = String.format(LOG_FORMAT, i);
@@ -65,7 +65,7 @@ public class LogManagerTest {
         }
 
         Iterator<byte[]> it = logManager.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             System.out.println("start");
             byte[] bytes = it.next();
             Page page = new Page(bytes);
@@ -73,17 +73,19 @@ public class LogManagerTest {
             System.out.println(str);
             Integer pos = bytes.length - Integer.BYTES;
             int sn = page.getInt(pos);
+            // 校验读取的日志是否与写入的一致
             Assert.assertEquals(str, logMap.get(sn));
         }
     }
 
     /**
      * 生成一条日志记录
+     *
      * @param logRecord
      * @param sn
      * @return
      */
-    private  byte[] createLogRecordByte(String logRecord, int sn) {
+    private byte[] createLogRecordByte(String logRecord, int sn) {
         int len = Page.maxLength(logRecord);
         int bytesNeeds = len + Integer.BYTES;
         byte[] bytes = new byte[bytesNeeds];
