@@ -46,8 +46,6 @@ public class LogManager {
             currentBlk = new BlockId(logFileName, lastBlockNum);
             fileManager.read(currentBlk, logPage);  // 将块内容读取到 page 中
         }
-
-        // TODO 初始化 lastestLSN 和 lastestSavedLSN
     }
 
     /**

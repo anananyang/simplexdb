@@ -47,7 +47,7 @@ public class LogManagerTest {
     }
 
     /**
-     * 对日志文件写入，已及使用迭代器读取进行测试，保证写入的内容与读取的内容一致
+     * 对日志文件写入，以及使用迭代器读取进行测试，保证写入的内容与读取的内容一致
      */
     @Test
     public void test1AppendAndInterator() {
