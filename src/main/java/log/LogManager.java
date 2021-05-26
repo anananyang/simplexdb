@@ -3,7 +3,6 @@ package log;
 import file.BlockId;
 import file.FileManager;
 import file.Page;
-import server.SimplexDB;
 
 import java.util.Iterator;
 

@@ -80,7 +80,7 @@ public class FileManager {
     /**
      * 给指定的文件新加一个块
      * 1、计算新的块编号
-     * 2、将新的块对应的文件位置全部重写为0。其中一个最大的好处就是方便计算块
+     * 2、将新的块对应的文件位置全部重写为0（java new 一个对象时，在 new 成功之后将相应的内存区域清零）。请零最大的好处就是方便计算 blockNum
      *
      * @param fileName
      * @return
@@ -91,10 +91,8 @@ public class FileManager {
         byte[] bytes = new byte[blockSize];
         try {
             RandomAccessFile file = this.getFile(fileName);
-//            System.out.println("before appending file len: " + file.length());
             file.seek(blockId.getBlockNum() * blockSize);
             file.write(bytes);
-//            System.out.println("after appending file len: " + file.length());
         } catch (IOException e) {
             throw new RuntimeException("cannot append block " + blockNum);
         }
