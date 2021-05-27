@@ -2,7 +2,6 @@ package file;
 
 /**
  * simplexDB会将文件按照指定大小（默认400）的字节进行分块，BlockId 用于描述文件的指定块。
-
  */
 public class BlockId {
     private String fileName;
@@ -28,13 +27,17 @@ public class BlockId {
 
     @Override
     public boolean equals(Object o) {
-       BlockId block = (BlockId) o;
-       return block.getFileName().equals(fileName) && block.getBlockNum().equals(blockNum);
+        // buffer pin 时，如果 buffer 还未分配过，o 会为 null
+        if(o == null) {
+            return false;
+        }
+        BlockId block = (BlockId) o;
+        return block.getFileName().equals(fileName) && block.getBlockNum().equals(blockNum);
     }
 
     @Override
     public int hashCode() {
-       return toString().hashCode();
+        return toString().hashCode();
     }
 }
 

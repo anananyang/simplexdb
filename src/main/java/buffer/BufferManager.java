@@ -7,12 +7,13 @@ import log.LogManager;
 
 public class BufferManager {
 
-    private Buffer[] buffers;   // 根据不同的 buffer 分配策略来选择不同的数据结构
+    private Buffer[] buffers;   // 根据不同的 buffer 分配策略来选择不同的数据结构, 比如 FIFI 或者 LRU 可以使用链表，clock 可以使用循环队列
     private int availableNum = 0;
-    private static final long MAX_WAITING_TIME = 10000;  // 最长等待10秒
+    public static final long MAX_WAITING_TIME = 10000;  // 最长等待10秒
 
     public BufferManager(FileManager fileManager, LogManager logManager, int bufferSize) {
         this.availableNum = bufferSize;
+        buffers = new Buffer[bufferSize];
         for (int i = 0; i < bufferSize; i++) {
             buffers[i] = new Buffer(fileManager, logManager);
         }
@@ -29,7 +30,9 @@ public class BufferManager {
             long startStamp = System.currentTimeMillis();
             Buffer buffer = this.tryToPin(blk);
             while (buffer == null && !this.waitingTooLong(startStamp)) {
+                System.out.println(Thread.currentThread().getName() + " try to wait at " + System.currentTimeMillis());
                 wait(MAX_WAITING_TIME);   // 等待 unpin 时唤醒
+                System.out.println(Thread.currentThread().getName() + " retry to get buffer at " + System.currentTimeMillis());
                 buffer = this.tryToPin(blk);
             }
             // 最终未获取到缓存
@@ -62,6 +65,8 @@ public class BufferManager {
             if (buffer == null) {
                 return null;
             }
+            // 将缓存分配给当前 block
+            buffer.assignToBlk(blk);
         }
         // 如果之前缓存未分配，现在分配之后，可用缓存数量要 -1
         if (!buffer.isPinned()) {
@@ -122,6 +127,4 @@ public class BufferManager {
             }
         }
     }
-
-
 }
