@@ -6,8 +6,10 @@ import log.LogManager;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
+/**
+ * 先被 pin 的 buffer（当前是 unpin 状态）优先分配
+ */
 public class FIFOStrategy implements BufferAssignStrategy {
 
     private LinkedList<Buffer> bufferList;

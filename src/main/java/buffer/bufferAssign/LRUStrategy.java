@@ -7,6 +7,9 @@ import log.LogManager;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * 先被 unpin 的 buffer 优先分配
+ */
 public class LRUStrategy implements BufferAssignStrategy {
 
     private LinkedList<Buffer> bufferList;
@@ -38,7 +41,8 @@ public class LRUStrategy implements BufferAssignStrategy {
     }
 
     /**
-     * 将最近
+     * 将 unpin 的 buffer 从 buffer链表中删除，并添加到链表末尾
+     *
      * @param buffer
      */
     @Override

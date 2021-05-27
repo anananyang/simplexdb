@@ -7,6 +7,9 @@ import util.ArrayIterator;
 
 import java.util.Iterator;
 
+/**
+ * 每次分配buffer时，都从上次被分配的 buffer 的下一个buffer开始遍历
+ */
 public class ClockStrategy implements BufferAssignStrategy {
 
     private Buffer[] buffers;
