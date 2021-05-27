@@ -86,7 +86,7 @@ public class LogManagerTest {
      * @return
      */
     private byte[] createLogRecordByte(String logRecord, int sn) {
-        int len = Page.maxLength(logRecord);
+        int len = Page.maxLength(logRecord.length());
         int bytesNeeds = len + Integer.BYTES;
         byte[] bytes = new byte[bytesNeeds];
         Page page = new Page(bytes);

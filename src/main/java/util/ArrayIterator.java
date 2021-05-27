@@ -2,6 +2,11 @@ package util;
 
 import java.util.Iterator;
 
+/**
+ * 数组迭代器
+ *
+ * @param <T>
+ */
 public class ArrayIterator<T> implements Iterator<T> {
 
     private T[] array;

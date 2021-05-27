@@ -30,12 +30,12 @@ public class Page {
     /**
      * 计算字符串 str 会占用的长度
      *
-     * @param str
+     * @param strLen 字符串长度
      * @return
      */
-    public static int maxLength(String str) {
+    public static int maxLength(int strLen) {
         int bytesPerChar = (int) CHARSET.newEncoder().maxBytesPerChar();
-        return Integer.BYTES + (str.length() * bytesPerChar);
+        return Integer.BYTES + (strLen * bytesPerChar);
     }
 
     /**
