@@ -59,7 +59,7 @@ public class BufferManagerTest {
      * 测试搜索已经分配给相同 block 的 buffer
      */
     @Test
-    public void test1PinFindExistingBuffer() {
+    public void testA1PinFindExistingBuffer() {
         BufferManager bufferManager = new BufferManager(fileManager, logManager, 2);
         BlockId block1 = new BlockId(TEST_FILE, 0);
         Buffer bufferForBlock1 = bufferManager.pin(block1);
@@ -75,7 +75,7 @@ public class BufferManagerTest {
     }
 
     @Test
-    public void test2PinWaitingTooLangException() {
+    public void testB2PinWaitingTooLangException() {
         BufferManager bufferManager = new BufferManager(fileManager, logManager, 1);
         BlockId block1 = new BlockId(TEST_FILE, 0);
         Buffer bufferForBlock1 = bufferManager.pin(block1);
@@ -94,7 +94,7 @@ public class BufferManagerTest {
     }
 
     @Test
-    public void test3PinChooseUnpinned() {
+    public void testC3PinChooseUnpinned() {
         BufferManager bufferManager = new BufferManager(fileManager, logManager, 2);
         BlockId block1 = new BlockId(TEST_FILE, 0);
         Buffer bufferForBlock1 = bufferManager.pin(block1);
@@ -113,7 +113,7 @@ public class BufferManagerTest {
     }
 
     @Test
-    public void test4Unpin() {
+    public void testD4Unpin() {
         BufferManager bufferManager = new BufferManager(fileManager, logManager, 1);
         BlockId block1 = new BlockId(TEST_FILE, 0);
         Buffer bufferForBlock1 = bufferManager.pin(block1);
@@ -129,7 +129,7 @@ public class BufferManagerTest {
      * 需要两个线程来测试
      */
     @Test
-    public void test5UnpinNotifyAll() {
+    public void testE5UnpinNotifyAll() {
         final BufferManager bufferManager = new BufferManager(fileManager, logManager, 1);
         CountDownLatch countDownLatch = new CountDownLatch(2);
         Thread[] threads = new Thread[2];
@@ -170,7 +170,7 @@ public class BufferManagerTest {
 
 
     @Test
-    public void test6FlushAll() {
+    public void testF6FlushAll() {
         BufferManager bufferManager = new BufferManager(fileManager, logManager, 1);
         BlockId block1 = new BlockId(TEST_FILE, 0);
         Buffer bufferForBlock1 = bufferManager.pin(block1);

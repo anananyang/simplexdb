@@ -1,22 +1,26 @@
 package buffer;
 
+import buffer.bufferAssign.*;
 import file.BlockId;
 import file.FileManager;
 import log.LogManager;
 
+import java.util.Iterator;
+
 
 public class BufferManager {
 
-    private Buffer[] buffers;   // 根据不同的 buffer 分配策略来选择不同的数据结构, 比如 FIFI 或者 LRU 可以使用链表，clock 可以使用循环队列
+    // 根据不同的 buffer 分配策略来选择不同的数据结构, 比如 FIFI 或者 LRU 可以使用链表，clock 可以使用循环队列
+    private BufferAssignStrategy assignStrategy;
     private int availableNum = 0;
     public static final long MAX_WAITING_TIME = 10000;  // 最长等待10秒
 
     public BufferManager(FileManager fileManager, LogManager logManager, int bufferSize) {
         this.availableNum = bufferSize;
-        buffers = new Buffer[bufferSize];
-        for (int i = 0; i < bufferSize; i++) {
-            buffers[i] = new Buffer(fileManager, logManager);
-        }
+//        assignStrategy = new NaiveStrategy(fileManager, logManager, bufferSize);
+//        assignStrategy = new ClockStrategy(fileManager, logManager, bufferSize);
+//        assignStrategy = new FIFOStrategy(fileManager, logManager, bufferSize);
+        assignStrategy = new LRUStrategy(fileManager, logManager, bufferSize);   // 默认使用 LRU 的缓存分配策略
     }
 
     /**
@@ -61,7 +65,7 @@ public class BufferManager {
     private Buffer tryToPin(BlockId blk) {
         Buffer buffer = findExistingBuffer(blk);
         if (buffer == null) {
-            buffer = chooseUnpinnedBuffer(blk);
+            buffer = chooseUnpinnedBuffer();
             if (buffer == null) {
                 return null;
             }
@@ -77,13 +81,8 @@ public class BufferManager {
         return buffer;
     }
 
-    private Buffer chooseUnpinnedBuffer(BlockId blk) {
-        for (Buffer buffer : buffers) {
-            if (!buffer.isPinned()) {
-                return buffer;
-            }
-        }
-        return null;
+    private Buffer chooseUnpinnedBuffer() {
+        return assignStrategy.chooseUnpinnedBuffer();
     }
 
     /**
@@ -93,11 +92,14 @@ public class BufferManager {
      * @return
      */
     private Buffer findExistingBuffer(BlockId blk) {
-        for (Buffer buffer : buffers) {
+        Iterator<Buffer> it = assignStrategy.iterator();
+        while(it.hasNext()) {
+            Buffer buffer = it.next();
             if (blk.equals(buffer.getBlk())) {
                 return buffer;
             }
         }
+
         return null;
     }
 
@@ -110,6 +112,7 @@ public class BufferManager {
     public synchronized void unpin(Buffer buffer) {
         buffer.unpin();
         if (!buffer.isPinned()) {
+            assignStrategy.unpin(buffer);   // 根据不同分配策略进行管理，比如 LRU，在 unpin 时，需要将 buffer 放入buffer队列的尾部
             availableNum++;
             notifyAll();   // 已经有个可用的buffer, 唤醒其他线程去使用
         }
@@ -121,7 +124,9 @@ public class BufferManager {
 
 
     public void flushAll(int txtnum) {
-        for (Buffer buffer : buffers) {
+        Iterator<Buffer> it = assignStrategy.iterator();
+        while(it.hasNext()) {
+            Buffer buffer = it.next();
             if (buffer.getModifyingTx() == txtnum) {
                 buffer.flush();
             }

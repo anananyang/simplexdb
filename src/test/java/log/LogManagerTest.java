@@ -50,7 +50,7 @@ public class LogManagerTest {
      * 对日志文件写入，以及使用迭代器读取进行测试，保证写入的内容与读取的内容一致
      */
     @Test
-    public void test1AppendAndInterator() {
+    public void testA1AppendAndInterator() {
         // 生成一个随机数, 作为序列号
         int random = ThreadLocalRandom.current().nextInt(100);
         // 保存序列号对应的日志记录

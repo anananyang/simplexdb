@@ -42,7 +42,7 @@ public class FileManagerTest {
 
 
     @Test
-    public void test1WriteRead() {
+    public void testA1WriteRead() {
 
         BlockId blockId = new BlockId(testFileName, readWriteBlockNum);
         Page writePage = new Page(new byte[SimplexDB.DEFAULT_BLK_SIZE]);
@@ -61,7 +61,7 @@ public class FileManagerTest {
     }
 
     @Test
-    public void test2Append() {
+    public void testB2Append() {
         BlockId blockId = fileManager.append(testFileName);
         Assert.assertNotNull(blockId);
         Assert.assertEquals(blockId.getFileName(), testFileName);

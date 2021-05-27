@@ -21,7 +21,7 @@ public class PageTest {
     }
 
     @Test
-    public void test1GetSetInt() {
+    public void testA1GetSetInt() {
         System.out.println("test1GetSetInt start");
         int len = SimplexDB.DEFAULT_BLK_SIZE / Integer.BYTES;
         for (int i = 0; i < len; i++) {
@@ -40,7 +40,7 @@ public class PageTest {
     }
 
     @Test
-    public void test2GetSetString() {
+    public void testB2GetSetString() {
         System.out.println("test2GetSetString start");
         int offset = ThreadLocalRandom.current().nextInt(100);
         String str = "anyanggogogo";

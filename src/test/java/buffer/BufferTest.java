@@ -58,7 +58,7 @@ public class BufferTest {
     }
 
     @Test
-    public void test1PinAndUnpin() {
+    public void testAa1PinAndUnpin() {
         buffer.pin();
         Assert.assertEquals(buffer.isPinned(), true);
         buffer.pin();
@@ -71,7 +71,7 @@ public class BufferTest {
 
 
     @Test
-    public void test3ModifyTxnumAndLsn() {
+    public void testCc3ModifyTxnumAndLsn() {
         int randomTxnum = ThreadLocalRandom.current().nextInt(100);
         int lsn = -2;
         buffer.modifyTxnumAndLsn(randomTxnum, lsn);
@@ -88,7 +88,7 @@ public class BufferTest {
 
 
     @Test
-    public void test4AssignToBlk() {
+    public void testD4AssignToBlk() {
         // 现将第一个块的某个位置写入字符串
         BlockId blockId = new BlockId(TEST_FILE, 0);
         buffer.assignToBlk(blockId);
