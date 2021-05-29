@@ -34,7 +34,9 @@ public class Page {
      * @return
      */
     public static int maxLength(int strLen) {
+        // 每个字符所占的字节数
         int bytesPerChar = (int) CHARSET.newEncoder().maxBytesPerChar();
+        // 字符串所占用的长度
         return Integer.BYTES + (strLen * bytesPerChar);
     }
 

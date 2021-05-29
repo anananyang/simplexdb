@@ -50,7 +50,7 @@ public class LogManager {
     /**
      * 添加一条记录，每个 logPage 的前四个字节存储当前 logPage 的 boundary
      * 写入时，从 logPage 的最后开始写入
-     *
+     * ps: 这里并没有处理日志记录长度超过 blockSize 的情况，实际上可能会出现这种情况，如果 logRecord 的类型是 SET_STRING
      * @param logRec
      * @return
      */
@@ -62,7 +62,7 @@ public class LogManager {
         // 如果存储空间不足
         if (boundary - bytesNeeded < Integer.BYTES) {
             this.flush();   // 将 logPage 写回到 logFile
-            currentBlk = this.appendNewBlock();   // 申请一个新的块, 并重设 logPage 的 boundary
+            currentBlk = this.appendNewBlock();   // 申请一个新的块, 并重设 logPage 的 boundary.
             boundary = logPage.getInt(0);
         }
         // 计算写入的位置
@@ -75,6 +75,19 @@ public class LogManager {
         return lastestLSN;
     }
 
+    /**
+     * ps: 这里的的 迭代器是从 logfile 的最后一条日志向前读，这样读的原因是为来配置 recoverManager 的 recover 策略
+     * recover 共有三种策略
+     * 1. undo-redo: 先执行一遍 undo，再执行一遍 redo
+     * 2. undo-only: 将 logfile 中的 uncommit 和 umrollback 的 updateRecord 中的事务用 oldValue 写回指定文件指定block指定
+     *               offse, 这需要从最后一条 logRecord 开始向前读
+     * 3. redo-only: 将 logfile 中已经 commit 的事务重新执行一遍，这需要从logfile的第一条记录向后读。
+     *
+     * simplexdb 选用的恢复方式是 undo-only 的方式，所以从后向前读读方式
+     *
+     *
+     * @return
+     */
     public Iterator<byte[]> iterator() {
         // 在迭代前将 logPage 写回到日志文件
         this.flush();

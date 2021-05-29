@@ -7,6 +7,11 @@ import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 文件管理器的最重要的两个功能
+ * 1. 将文件的某个部分(blockId) 写入到 Page 中
+ * 2. 将 Page 中缓存的内容写入到文件的指定位置（具体位置根据 blockId 进行计算）
+ */
 public class FileManager {
     // 数据库所在目录
     private File dbDirectory;
