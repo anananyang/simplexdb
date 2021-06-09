@@ -1,5 +1,6 @@
 package file;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -83,7 +84,8 @@ public class Page {
      * @param bytes
      */
     public void setBytes(int offset, byte[] bytes) {
-        byteBuffer.position(offset);
+        // jdk 版本过高，会报 NoSuchMethod 异常
+        ((Buffer)byteBuffer).position(offset);
         byteBuffer.putInt(bytes.length);
         byteBuffer.put(bytes);
     }

@@ -1,9 +1,7 @@
 package file;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runners.MethodSorters;
 import server.SimplexDB;
 
 import java.io.File;
@@ -12,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * 这里的测试需要按照顺序执行，先执行test1WriteRead，再 test2Append
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FileManagerTest {
 
     private static FileManager fileManager = null;
@@ -43,7 +42,7 @@ public class FileManagerTest {
 
     @Test
     public void testA1WriteRead() {
-
+        System.out.println("testA1WriteRead" );
         BlockId blockId = new BlockId(testFileName, readWriteBlockNum);
         Page writePage = new Page(new byte[SimplexDB.DEFAULT_BLK_SIZE]);
 
@@ -62,9 +61,11 @@ public class FileManagerTest {
 
     @Test
     public void testB2Append() {
+        System.out.println("testB2Append" );
         BlockId blockId = fileManager.append(testFileName);
         Assert.assertNotNull(blockId);
         Assert.assertEquals(blockId.getFileName(), testFileName);
+        System.out.println("readWriteBlockNum: " + readWriteBlockNum);
         Assert.assertTrue(blockId.getBlockNum() == (readWriteBlockNum + 1));
     }
 

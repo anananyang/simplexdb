@@ -6,7 +6,6 @@ import file.Page;
 import log.LogManager;
 import tx.Transaction;
 
-import javax.jnlp.IntegrationService;
 
 /**
  * SetInt 日志记录格式：<type(Integer), txnum(Integer), fileName(String), blockSize(Integer), offset(Integer), val(Integer)>
