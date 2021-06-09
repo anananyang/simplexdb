@@ -22,7 +22,7 @@ public class SetStringLogRecord implements LogRecord {
 
         String fileName = page.getString(fileNamePos);
 
-        int blockNumPos = fileNamePos + Integer.BYTES;
+        int blockNumPos = fileNamePos + Page.maxLength(fileName.length());
         int offsetPos = blockNumPos + Integer.BYTES;
         int valPos = offsetPos + Integer.BYTES;
 
@@ -98,4 +98,15 @@ public class SetStringLogRecord implements LogRecord {
     }
 
 
+    public BlockId getBlk() {
+        return blk;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public String getVal() {
+        return val;
+    }
 }

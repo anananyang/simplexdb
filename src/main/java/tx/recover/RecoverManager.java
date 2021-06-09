@@ -43,6 +43,17 @@ public class RecoverManager {
     private Transaction tx;
     private int txnum;
 
+    public RecoverManager(Transaction tx,
+                          LogManager logManager,
+                          BufferManager bufferManager) {
+
+        this.logManager = logManager;
+        this.bufferManager = bufferManager;
+        this.tx = tx;
+        this.txnum = tx.getTxnum();
+    }
+
+
     /**
      * undo-only 要求在将 commit 的log record 写回磁盘前，要先将修改的记录写回到磁盘
      */
@@ -104,10 +115,9 @@ public class RecoverManager {
                 finishedTx.add(logRecord.txnum());
             } else if (!finishedTx.contains(logRecord.txnum())) {
                 // 原则上，在处理到 Start log record 时，如果 txnum 不在 finishedTx 中的话，需要添加一条 rollback 记录
+                logRecord.undo(tx);
                 if (logRecord.type() == LogRecord.START) {
                     RollbackLogRecord.writeToLog(logManager, logRecord.txnum());
-                } else {
-                    logRecord.undo(tx);
                 }
             }
         }

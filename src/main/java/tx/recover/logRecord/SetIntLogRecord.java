@@ -110,4 +110,17 @@ public class SetIntLogRecord implements LogRecord {
 
         return logManager.append(rec);
     }
+
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public int getVal() {
+        return val;
+    }
+
+    public BlockId getBlk() {
+        return blk;
+    }
 }
