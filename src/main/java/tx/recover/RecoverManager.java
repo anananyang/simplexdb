@@ -51,6 +51,9 @@ public class RecoverManager {
         this.bufferManager = bufferManager;
         this.tx = tx;
         this.txnum = tx.getTxnum();
+
+        // 事务开始时，生成一条 stratLog 记录
+        StartLogRecord.writeToLog(logManager, this.txnum);
     }
 
 
@@ -116,6 +119,7 @@ public class RecoverManager {
             } else if (!finishedTx.contains(logRecord.txnum())) {
                 // 原则上，在处理到 Start log record 时，如果 txnum 不在 finishedTx 中的话，需要添加一条 rollback 记录
                 logRecord.undo(tx);
+                System.out.println("rolled back: " + logRecord.toString());
                 if (logRecord.type() == LogRecord.START) {
                     RollbackLogRecord.writeToLog(logManager, logRecord.txnum());
                 }

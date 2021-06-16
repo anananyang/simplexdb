@@ -3,10 +3,12 @@ package tx.recover.logRecord;
 
 import org.junit.Assert;
 import org.junit.Test;
+import tx.BaseTxTest;
 
 import java.util.Iterator;
 
-public class CheckPointLogRecordTest extends BaseLogRecordTest{
+public class CheckPointLogRecordTest extends BaseTxTest {
+
 
     @Test
     public void testAWriteCheckPointLogRecord() {

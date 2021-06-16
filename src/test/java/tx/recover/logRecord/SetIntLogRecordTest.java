@@ -2,16 +2,15 @@ package tx.recover.logRecord;
 
 
 import file.BlockId;
-import file.Page;
 import org.junit.*;
-import server.SimplexDB;
+import tx.BaseTxTest;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public class SetIntLogRecordTest extends BaseLogRecordTest{
+public class SetIntLogRecordTest extends BaseTxTest {
 
     private static final String SET_INT_TEST_FILE_A = "writeSetIntTest.dat";
     private static final String SET_INT_TEST_FILE_B = "undoSetIntTest.dat";

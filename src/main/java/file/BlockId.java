@@ -30,6 +30,8 @@ public class BlockId {
         // buffer pin 时，如果 buffer 还未分配过，o 会为 null
         if(o == null) {
             return false;
+        } else if((o instanceof BlockId) == false) {
+            return false;
         }
         BlockId block = (BlockId) o;
         return block.getFileName().equals(fileName) && block.getBlockNum().equals(blockNum);

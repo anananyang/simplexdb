@@ -5,13 +5,14 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import tx.BaseTxTest;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SetStringLogRecordTest extends BaseLogRecordTest {
+public class SetStringLogRecordTest extends BaseTxTest {
 
     private static final String SET_INT_TEST_FILE_A = "writeSetIntTest.dat";
 

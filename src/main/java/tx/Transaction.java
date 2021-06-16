@@ -40,19 +40,17 @@ public class Transaction {
 
 
     public Transaction(FileManager fileManager, LogManager logManager, BufferManager bufferManager) {
+        // 获取事务ID，需要在创建 recoverManager 之前执行，因为在 recoverManager 中需要用到
+        this.txnum = getNextTxnum();
+
         this.fileManager = fileManager;
         this.logManager = logManager;
         this.bufferManager = bufferManager;
-        // 获取事务ID，需要在创建 recoverManager 之前执行，因为在 recoverManager 中需要用到
-        this.txnum = getNextTxnum();
-        // 创建支持当前事务的三个子组件: 恢复管理器、并发管理器、事务缓存管理器
 
+        // 创建支持当前事务的三个子组件: 恢复管理器、并发管理器、事务缓存管理器
         this.myBufferList = new BufferList(bufferManager);
         this.concurrencyManager = new ConcurrencyManager();
         this.recoverManager = new RecoverManager(this, logManager, bufferManager);
-
-        // 事务开始时，生成一条 stratLog 记录
-        StartLogRecord.writeToLog(logManager, this.getTxnum());
     }
 
 

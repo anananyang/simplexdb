@@ -1,19 +1,17 @@
 package tx.recover.logRecord;
 
 
-import file.BlockId;
-import file.Page;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import server.SimplexDB;
+import tx.BaseTxTest;
 
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class RollbackLogRecordTest extends BaseLogRecordTest {
+public class RollbackLogRecordTest extends BaseTxTest {
 
 //    private static final String TEST_DATA_FILE = "rollback.dat";
 

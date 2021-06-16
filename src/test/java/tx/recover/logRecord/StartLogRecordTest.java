@@ -3,11 +3,12 @@ package tx.recover.logRecord;
 
 import org.junit.Assert;
 import org.junit.Test;
+import tx.BaseTxTest;
 
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class StartLogRecordTest extends BaseLogRecordTest{
+public class StartLogRecordTest extends BaseTxTest {
 
     @Test
     public void testAWriteStartLogRecord() {
