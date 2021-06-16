@@ -10,7 +10,10 @@ public class Buffer {
 
     private FileManager fileManager;
     private LogManager logManager;
+
+    // buffer 中的内容
     private Page content;
+    // buffer 中的内容所属的 block
     private BlockId blk;
     /**
      * 类似引用计数，当 pin = 0 时，表示该 buffer 是可用的。每次缓存分配之后需要累加 pin, buffer 还回时，pin 递减
@@ -71,17 +74,18 @@ public class Buffer {
     }
 
     /**
-     * 如果 content 内容被修改过，则将其写回磁盘
+     * 将内容写回磁盘
      */
     public void flush() {
         if (txnum < 0) {
             return;
         }
-        // 先将日志写回磁盘，日志用于恢复操作，要先于内容写回磁盘
+        // 先将日志写回磁盘，日志用于恢复操作，要先于内容写回磁盘，如果数据先于日志写回磁盘，此时发生停机，由于未写回日志，
+        // 那么在恢复时就无法将数据恢复了
         logManager.flush(lsn);
         // 将缓存中的内容写回磁盘
         fileManager.write(blk, content);
-        // 协会之后，将事务ID改回默认的状态
+        // 写回之后，将事务ID改回默认的状态
         this.txnum = -1;
     }
 
