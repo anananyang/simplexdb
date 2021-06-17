@@ -189,6 +189,11 @@ public class Transaction {
         return fileManager.getNewBlockNum(fileName);
     }
 
+    /**
+     * 添加一个块
+     * @param fileName
+     * @return
+     */
     public BlockId append(String fileName) {
         BlockId blk = new BlockId(fileName, END_OF_FILE);
         // 这里是写文件，必须加独占锁
@@ -206,5 +211,7 @@ public class Transaction {
         return nextTxnum;
     }
 
-
+    public ConcurrencyManager getConcurrencyManager() {
+        return concurrencyManager;
+    }
 }

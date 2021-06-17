@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 记录当前事务所获取到到所有的buffer
+ */
 public class BufferList {
 
     private BufferManager bufferManager;
@@ -29,6 +32,10 @@ public class BufferList {
      * @return
      */
     void pin(BlockId blk) {
+        // 已经获取过buffer
+        if(bufferMap.containsKey(blk)) {
+            return;
+        }
         Buffer buffer = bufferManager.pin(blk);
         pins.add(blk);
         bufferMap.put(blk, buffer);
@@ -67,6 +74,10 @@ public class BufferList {
 
     Buffer getBuffer(BlockId blk) {
         return bufferMap.get(blk);
+    }
+
+    Integer getBufferNum() {
+        return ListUtil.isBlank(pins) ? 0 : pins.size();
     }
 
 }

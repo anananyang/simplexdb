@@ -43,11 +43,17 @@ public class LockTable {
 
     }
 
+    /**
+     * 在ConcurrencyManager中，必须先加
+     * @param blk
+     */
     public synchronized void xLock(BlockId blk) {
         try {
             Long startTime = System.currentTimeMillis();
             while (hasOtherSLock(blk) && !waittingTooLong(startTime)) {
+                System.out.println("thread [ " + Thread.currentThread().getName() + " ] is going to wait " + MAX_WAITTING_TIME + " millis at " + System.nanoTime());
                 wait(MAX_WAITTING_TIME);
+                System.out.println("thread [ " + Thread.currentThread().getName() + " ] has been notified at " + System.nanoTime());
             }
             // 如果是等待时间太长导致的未获取到锁
             if (hasOtherSLock(blk)) {
@@ -63,7 +69,7 @@ public class LockTable {
         Integer val = getLockValue(blk);
         // 如果除了当前事务之外，还有其他事务持有该共享锁
         if(val > 1) {
-            locks.put(blk, val);
+            locks.put(blk, val - 1);
         } else {
             locks.remove(blk);  // 释放锁
             notifyAll();        // 释放锁之后需要唤醒可能在等待锁的事务去竞争锁
@@ -99,4 +105,18 @@ public class LockTable {
         return System.currentTimeMillis() - startTime > MAX_WAITTING_TIME;
     }
 
+    public Integer getLockNum() {
+        int lockNum = 0;
+        for(Map.Entry entry : locks.entrySet()) {
+            Integer val = (Integer)entry.getValue();
+            // 如果是 xLock
+            if(val < 0) {
+                lockNum++;
+            } else {
+                lockNum = lockNum + val;
+            }
+        }
+
+        return lockNum;
+    }
 }

@@ -145,6 +145,8 @@ public class RecoverManagerTest extends BaseTxTest {
         logManager.flush(999);
         bufferManager.flushAll(txA.getTxnum());
         bufferManager.flushAll(txB.getTxnum());
+        txA.getConcurrencyManager().release();
+        txB.getConcurrencyManager().release();
 
         Transaction recoverTx = new Transaction(fileManager, logManager, bufferManager);
         recoverTx.recover();

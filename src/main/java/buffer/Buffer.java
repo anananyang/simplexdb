@@ -101,5 +101,9 @@ public class Buffer {
         this.pin--;
     }
 
+    public Integer getPin() {
+        return this.pin;
+    }
+
 }
 

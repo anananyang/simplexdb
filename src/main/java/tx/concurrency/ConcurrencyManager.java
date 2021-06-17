@@ -25,9 +25,10 @@ public class ConcurrencyManager {
          * Note：判断 blk 有没有锁时，并没有指定锁的类型是 sLock，这样中的原因是 blk 具有 xLock，
          * 那么该 blk 也有 sLock
          */
-        if(locks.containsKey(blk)) {
+        if (!locks.containsKey(blk)) {
             lockTable.sLock(blk);
             locks.put(blk, LockType.sLock);
+            System.out.println("thread [ " + Thread.currentThread().getName() + " ] get sLock at " + System.nanoTime());
         }
     }
 
@@ -37,29 +38,35 @@ public class ConcurrencyManager {
      * @param blk
      */
     public void xLock(BlockId blk) {
-         if(!hasXLock(blk)) {
-             // 先获取共享锁
-             this.sLock(blk);
-             // 再获取独占锁
-             lockTable.xLock(blk);
-             // 记录锁
-             locks.put(blk, LockType.xLock);
-         }
+        // 已经有锁
+        if (hasXLock(blk)) {
+            return;
+        }
+        // 先获取共享锁
+        this.sLock(blk);
+        // 再获取独占锁
+        lockTable.xLock(blk);
+        // 记录锁
+        locks.put(blk, LockType.xLock);
+
+        System.out.println("thread [ " + Thread.currentThread().getName() + " ] get xLock at " + System.nanoTime());
     }
 
     /**
      * 释放所有的锁
      */
     public void release() {
-        for(BlockId blk : locks.keySet()) {
+        for (BlockId blk : locks.keySet()) {
             lockTable.unlock(blk);
         }
         locks.clear();
     }
 
-
     public Boolean hasXLock(BlockId blk) {
-       return LockType.xLock.equals(locks.get(blk));
+        return LockType.xLock.equals(locks.get(blk));
+    }
 
+    public String getLockType(BlockId blk) {
+        return locks.get(blk);
     }
 }
