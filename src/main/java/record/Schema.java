@@ -22,9 +22,14 @@ public class Schema {
     }
 
     public void addIntField(String fieldName) {
-        addField(fieldName, Types.INTEGER, Integer.BYTES);
+        addField(fieldName, Types.INTEGER, 0);
     }
 
+    /**
+     *
+     * @param fieldName
+     * @param length  字符串中字符的数量
+     */
     public void addStringField(String fieldName, int length) {
         addField(fieldName, Types.VARCHAR, length);
     }
