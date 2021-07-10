@@ -22,7 +22,8 @@ public class Schema {
     }
 
     public void addIntField(String fieldName) {
-        addField(fieldName, Types.INTEGER, 0);
+        // 实际上不会使用这个的长度 Integer.BYTES
+        addField(fieldName, Types.INTEGER, Integer.BYTES);
     }
 
     /**
@@ -54,6 +55,7 @@ public class Schema {
             int length = schema.getLength(fieldName);
             FieldInfo fieldInfo = new FieldInfo(type, length);
             fieldInfoMap.put(fieldName, fieldInfo);
+            this.fieldNameList.add(fieldName);
         }
     }
 
