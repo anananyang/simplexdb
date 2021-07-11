@@ -24,7 +24,7 @@ public class TableScan implements UpdateScan {
         this.layout = layout;
         this.fileName = tableName + TABLE_FILE_SUFFIX;
 
-        if(tx.blockSize() == 0) {
+        if(tx.size(fileName) == 0) {
             moveToNewBlock();
         } else {
             moveToBlock(0);
@@ -159,6 +159,6 @@ public class TableScan implements UpdateScan {
      * @return
      */
     private boolean atLastBlock() {
-        return recordPage.getBlk().getBlockNum() == (tx.blockSize() - 1);
+        return recordPage.getBlk().getBlockNum() == (tx.size(fileName) - 1);
     }
 }

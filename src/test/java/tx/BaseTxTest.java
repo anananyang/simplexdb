@@ -46,9 +46,16 @@ public class BaseTxTest {
     @AfterClass
     public static void tearDown() {
         // 测试完成将文件删除
-        File file = new File(dir, LOG_FILE);
-        if (file.exists()) {
-            file.delete();
+        removeDir(dir);
+    }
+
+    private static void removeDir(File dir) {
+        for(File file : dir.listFiles()) {
+            if(file.isDirectory()) {
+                removeDir(file);
+            } else {
+                file.delete();
+            }
         }
         dir.delete();
     }
