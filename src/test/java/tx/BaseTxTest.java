@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import server.SimplexDB;
 import tx.recover.logRecord.LogRecord;
 import tx.recover.logRecord.LogRecordFactory;
+import util.FileUtil;
 
 import java.io.File;
 import java.util.Iterator;
@@ -45,22 +46,8 @@ public class BaseTxTest {
 
     @AfterClass
     public static void tearDown() {
-        // 测试完成将文件删除
-        removeDir(dir);
+        FileUtil.removeDir(dir);
     }
-
-    private static void removeDir(File dir) {
-        for(File file : dir.listFiles()) {
-            if(file.isDirectory()) {
-                removeDir(file);
-            } else {
-                file.delete();
-            }
-        }
-        dir.delete();
-    }
-
-
 
     protected void printLog() {
         System.out.println("------  start to print log -----");

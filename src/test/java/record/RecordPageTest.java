@@ -8,6 +8,7 @@ import org.junit.*;
 import org.junit.runners.MethodSorters;
 import server.SimplexDB;
 import tx.Transaction;
+import util.FileUtil;
 
 import java.io.File;
 import java.sql.Types;
@@ -31,7 +32,6 @@ public class RecordPageTest {
 
 
     private static File datebase;
-    private static File table;
     private static String TEST_DIR_PATH = "reocrdTest";
     private static String TEST_TABLE_PATH = "simple_db_students.tbl";
     private static String TEST_LOG_PATH = "recordTest.log";
@@ -39,10 +39,7 @@ public class RecordPageTest {
     @BeforeClass
     public static void init() {
         datebase = new File(TEST_DIR_PATH);
-        File table = new File(datebase, TEST_TABLE_PATH);
-        if (table.exists()) {
-            table.delete();
-        }
+        FileUtil.removeDir(datebase);
 
         Schema schema = new Schema();
         schema.addStringField("student_name", 12);
@@ -64,11 +61,7 @@ public class RecordPageTest {
 
     @AfterClass
     public static void destory() {
-        File table = new File(datebase, TEST_TABLE_PATH);
-        if (table.exists()) {
-            table.delete();
-        }
-        datebase.delete();
+        FileUtil.removeDir(datebase);
     }
 
     @Test

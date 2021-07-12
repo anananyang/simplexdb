@@ -15,6 +15,7 @@ public class ConcurrencyManagerTest {
 
     @Test
     public void testA1SLock() {
+        System.out.println("testA1SLock");
         ConcurrencyManager concurrencyMgr1 = new ConcurrencyManager();
         ConcurrencyManager concurrencyMgr2 = new ConcurrencyManager();
 
@@ -45,6 +46,7 @@ public class ConcurrencyManagerTest {
 
     @Test
     public void testB2XLock() {
+        System.out.println("testB2XLock");
         ConcurrencyManager concurrencyMgr1 = new ConcurrencyManager();
         ConcurrencyManager concurrencyMgr2 = new ConcurrencyManager();
 
@@ -68,6 +70,7 @@ public class ConcurrencyManagerTest {
      */
     @Test
     public void TestC3ThreadGetLock() {
+        System.out.println("TestC3ThreadGetLock");
 //        Long startNanoTime = System.nanoTime()
         // 只要超过2个线程在同时竞争同一个 xLock 可能会取不到锁（在2个线程都取到sLock准备获取xLock时，此时发生死锁）
         int count = 2;
