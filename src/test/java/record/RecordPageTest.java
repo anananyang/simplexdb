@@ -11,11 +11,9 @@ import tx.Transaction;
 import util.FileUtil;
 
 import java.io.File;
+import java.sql.Array;
 import java.sql.Types;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -133,13 +131,13 @@ public class RecordPageTest {
         Map<Integer, String> recordMap = new TreeMap<>();
         for (; curSlot < slotNum; curSlot++) {
             int insertSlot = recordPage.insertAfter(curSlot);
-            if(insertSlot == -1) {
+            if (insertSlot == -1) {
                 break;
             }
             Schema schema = layout.getSchema();
             String record = "";
-            for(String field : schema.getFieldNameList()) {
-                if(schema.getType(field) == Types.INTEGER) {
+            for (String field : schema.getFieldNameList()) {
+                if (schema.getType(field) == Types.INTEGER) {
                     Integer ival = ThreadLocalRandom.current().nextInt(100);
                     recordPage.setInt(insertSlot, field, ival);
                     record = record + ival + ",";
@@ -158,14 +156,14 @@ public class RecordPageTest {
         curSlot = -1;
         for (; curSlot < slotNum; curSlot++) {
             int nextSlot = recordPage.nextAfter(curSlot);
-            if(nextSlot == -1) {
+            if (nextSlot == -1) {
                 break;
             }
             Schema schema = layout.getSchema();
             String recordStr = recordMap.remove(nextSlot);
             int i = 0;
             String[] record = recordStr.split(",");
-            for(String field : schema.getFieldNameList()) {
+            for (String field : schema.getFieldNameList()) {
                 String val = null;
                 if (schema.getType(field) == Types.INTEGER) {
                     Integer ival = recordPage.getInt(nextSlot, field);
@@ -183,7 +181,5 @@ public class RecordPageTest {
 
         Assert.assertEquals(0, recordMap.size());
     }
-
-
 
 }

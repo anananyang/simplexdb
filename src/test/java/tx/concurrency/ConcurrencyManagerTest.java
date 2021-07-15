@@ -69,7 +69,7 @@ public class ConcurrencyManagerTest {
      * 多线程模拟竞争锁
      */
     @Test
-    public void TestC3ThreadGetLock() {
+    public void tstC3ThreadGetLock() {
         System.out.println("TestC3ThreadGetLock");
 //        Long startNanoTime = System.nanoTime()
         // 只要超过2个线程在同时竞争同一个 xLock 可能会取不到锁（在2个线程都取到sLock准备获取xLock时，此时发生死锁）

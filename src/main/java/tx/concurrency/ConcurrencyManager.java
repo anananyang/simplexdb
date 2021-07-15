@@ -28,7 +28,7 @@ public class ConcurrencyManager {
         if (!locks.containsKey(blk)) {
             lockTable.sLock(blk);
             locks.put(blk, LockType.sLock);
-            System.out.println("thread [ " + Thread.currentThread().getName() + " ] get sLock for" + blk +
+            System.out.println("thread [ " + Thread.currentThread().getName() + " ] get sLock for " + blk +
                     " at " + System.nanoTime());
         }
     }
@@ -51,7 +51,7 @@ public class ConcurrencyManager {
         locks.put(blk, LockType.xLock);
 
         System.out.println("thread [ " + Thread.currentThread().getName() + " ] get xLock for " + blk +
-                "at " + System.nanoTime());
+                " at " + System.nanoTime());
     }
 
     /**
